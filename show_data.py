@@ -101,32 +101,14 @@ def show_best_selling_events(events_data):
             break
 
 def show_ticket_by_serial(events_data):
-    """
-    Let the user enter a ticket serial number and print the full ticket and event details.
-    Searches both available and sold tickets across all events.
-    Parameters:
-        events_data (list): list of events.
-    """
-    serial = input('Enter ticket serial number: ').strip() #get serial number from user
-    if not serial: #if user entered an empty string
-        print('No serial number entered.')
-        return
-
-    for event in events_data: #loop through all events to search in both available and sold tickets
+    serial = input('Enter ticket serial number: ').strip()
+    for event in events_data:
         for status, tickets_dict in [('Available', event['available']), ('Sold', event['sold'])]:
-            for section, tickets in tickets_dict.items(): #loop through sections in available/sold
-                for ticket in tickets: #loop through individual tickets in this section
-                    if ticket[0] == serial: #ticket[0] is the serial number
-                        print('--- Ticket Found ---')
-                        print(f'Serial Number : {ticket[0]}')
-                        print(f'Row           : {ticket[1]}')
-                        print(f'Seat          : {ticket[2]}')
-                        print(f'Price         : {ticket[3]} NIS')
-                        print(f'Section       : {section}')
-                        print(f'Status        : {status}')
-                        print(f'Event         : {event["event"]}')
-                        print(f'Date          : {event["date"]}')
-                        print(f'Venue         : {event["venue"]}')
-                        return #stop searching once the ticket is found
-
-    print(f'No ticket found with serial number: {serial}') #if no ticket was found after searching all events
+            for section, tickets in tickets_dict.items():
+                for ticket in tickets:
+                    if ticket[0] == serial:
+                        print(f'Serial: {ticket[0]}, Row: {ticket[1]}, Seat: {ticket[2]}, Price: {ticket[3]} NIS')
+                        print(f'Section: {section}, Status: {status}')
+                        print(f'Event: {event["event"]} - {event["date"]} - {event["venue"]}')
+                        return
+    print('Ticket not found.')
