@@ -8,6 +8,7 @@ import summary
 import update_data
 import show_data
 import dummy_data
+import delete_data
 print('Welcome to Tickets Reseller Manager!') #welcome message to the user when they start the program
 #load data before the menu and tell th user that the data is loading
 print('loading data...')
@@ -22,7 +23,8 @@ while True: #while loop to keep the user in the main menu until they choose to e
 [2] Add Tickets / Events information
 [3] Update Tickets / Events information
 [4] Summary
-[5] Load/Save Data
+[5] Delete Event
+[6] Load/Save Data
 [0] Exit
 ---------------------
 Enter your choise: """))
@@ -42,7 +44,9 @@ Enter your choise: """))
         data = update_data.menu(data)
     elif user_choice == 4: #if user choose to show summary
         summary.show_summary(data)
-    elif user_choice == 5: #if user choose to load/save data
+    elif user_choice == 5: #if user wants to delete an event
+        delete_data.delete_event(data)
+    elif user_choice == 6: #if user choose to load/save data
         data = dummy_data.menu(data)
     else: #if user choose an invalid option from the menu
         print('Try again. Please choose a valid option from the menu!')
