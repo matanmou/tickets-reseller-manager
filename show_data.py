@@ -18,6 +18,7 @@ def menu(events_data):
 [2] Show Available Tickets
 [3] Show All History Events
 [4] Show Best Selling Events
+[5] Search Ticket by Serial Number
 [0] Return To Main Menu
 ---------------------
 Enter your choise: """))
@@ -37,6 +38,8 @@ Enter your choise: """))
             show_all_events(events_data)
         elif user_choice == 4: #if user choose to show best selling events
             show_best_selling_events(events_data)
+        elif user_choice == 5: #if user choose to search ticket by serial number
+            show_ticket_by_serial(events_data)
         else: #if user choose an invalid option from the menu
             print('Please choose number from the menu!\n')
             continue
@@ -95,4 +98,35 @@ def show_best_selling_events(events_data):
             print(f'[{i+1}] {sorted_events[i]["event"]} - Number of sold tickets: {sorted_events[i]["sold_count"]}')
         else:
             print('No more events to show...')
-            break 
+            break
+
+def show_ticket_by_serial(events_data):
+    """
+    Let the user enter a ticket serial number and print the full ticket and event details.
+    Searches both available and sold tickets across all events.
+    Parameters:
+        events_data (list): list of events.
+    """
+    serial = input('Enter ticket serial number: ').strip() #get serial number from user
+    if not serial: #if user entered an empty string
+        print('No serial number entered.')
+        return
+
+    for event in events_data: #loop through all events to search in both available and sold tickets
+        for status, tickets_dict in [('Available', event['available']), ('Sold', event['sold'])]:
+            for section, tickets in tickets_dict.items(): #loop through sections in available/sold
+                for ticket in tickets: #loop through individual tickets in this section
+                    if ticket[0] == serial: #ticket[0] is the serial number
+                        print('--- Ticket Found ---')
+                        print(f'Serial Number : {ticket[0]}')
+                        print(f'Row           : {ticket[1]}')
+                        print(f'Seat          : {ticket[2]}')
+                        print(f'Price         : {ticket[3]} NIS')
+                        print(f'Section       : {section}')
+                        print(f'Status        : {status}')
+                        print(f'Event         : {event["event"]}')
+                        print(f'Date          : {event["date"]}')
+                        print(f'Venue         : {event["venue"]}')
+                        return #stop searching once the ticket is found
+
+    print(f'No ticket found with serial number: {serial}') #if no ticket was found after searching all events
