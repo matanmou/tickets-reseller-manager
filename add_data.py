@@ -4,6 +4,7 @@ It provides a menu for the user to add tickets to existing events or to add new 
 """
 
 import utilitis
+
 events_data = []
 
 def menu(events_data):
@@ -19,6 +20,7 @@ def menu(events_data):
             user_choice = int(input("""==== Add Tickets Menu =====
 [1] Add ticket to event
 [2] Add event
+[3] Duplicate event
 [0] Return to main menu
 ---------------------
 Enter your choise: """))
@@ -33,6 +35,8 @@ Enter your choise: """))
             events_data = add_ticket_to_event(events_data)
         elif user_choice == 2: #if user choose to add new event
             events_data = add_event(events_data)
+        elif user_choice == 3:
+            events_data = duplicate_event(events_data)
         else: #if user choose an invalid option from the menu
             print('Please choose valid option from the menu!')
 
@@ -137,4 +141,36 @@ def add_event(events_data):
     #add new event information to new event dict and append it to the events data list
     events_data.append({'event': event_name, 'date': event_date, 'venue': event_venue, 'available': {}, 'sold': {}})
     print(f'\nThe event \'{event_name}\' is successfully added!\n') #print success message to user
+    return events_data
+
+def duplicate_event(events_data):
+    """
+    Duplicate an existing event and add it to the events data list.
+    Parameters:
+        events_data (list): list of events.
+    Returns:
+        list: The updated events data.
+    """
+    print('--- Duplicate Event ---')
+    utilitis.show_events_list(events_data)
+    print(f'[0] Return to add tickets menu')
+    try:
+        user_choice = int(input("Enter event number to duplicate: "))
+        print('')
+    except ValueError:
+        print('Wrong Input!!!! Please enter a valid option from the menu!\n')
+        return events_data
+    #if user chose 0 - return to main menu
+    if user_choice == 0:
+        print('Return to add tickets menu...\n')
+        return events_data
+    #if user chose any existing number of event - duplicate it and make all tickets available
+    elif 0 < user_choice <= len(events_data):
+        new_event = events_data[user_choice - 1].copy()
+        new_event['available'] = {}
+        new_event['sold'] = {}
+        events_data.append(new_event)
+        print(f"\nEvent '{new_event['event']}' duplicated successfully!\n")
+    else:
+        print('Please choose a valid option from the menu!\n')
     return events_data
