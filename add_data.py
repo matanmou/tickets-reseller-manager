@@ -4,7 +4,6 @@ It provides a menu for the user to add tickets to existing events or to add new 
 """
 
 import utilitis
-import copy
 
 events_data = []
 
@@ -156,7 +155,7 @@ def duplicate_event(events_data):
     utilitis.show_events_list(events_data)
     print(f'[0] Return to add tickets menu')
     try:
-        user_choice = int(input("Enter your choice: "))
+        user_choice = int(input("Enter event number to duplicate: "))
         print('')
     except ValueError:
         print('Wrong Input!!!! Please enter a valid option from the menu!\n')
@@ -165,7 +164,9 @@ def duplicate_event(events_data):
         print('Return to add tickets menu...\n')
         return events_data
     elif 0 < user_choice <= len(events_data):
-        new_event = copy.deepcopy(events_data[user_choice - 1])
+        new_event = events_data[user_choice - 1].copy()
+        new_event['available'] = {}
+        new_event['sold'] = {}
         events_data.append(new_event)
         print(f"\nEvent '{new_event['event']}' duplicated successfully!\n")
     else:
