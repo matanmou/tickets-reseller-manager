@@ -21,6 +21,7 @@ def menu(events_data):
             user_choice = int(input("""==== Add Tickets Menu =====
 [1] Add ticket to event
 [2] Add event
+[3] Duplicate event
 [0] Return to main menu
 ---------------------
 Enter your choise: """))
@@ -35,6 +36,8 @@ Enter your choise: """))
             events_data = add_ticket_to_event(events_data)
         elif user_choice == 2: #if user choose to add new event
             events_data = add_event(events_data)
+        elif user_choice == 3:
+            events_data = duplicate_event(events_data)
         else: #if user choose an invalid option from the menu
             print('Please choose valid option from the menu!')
 
