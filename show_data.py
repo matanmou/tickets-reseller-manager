@@ -18,6 +18,7 @@ def menu(events_data):
 [2] Show Available Tickets
 [3] Show All History Events
 [4] Show Best Selling Events
+[5] Search Ticket by Serial Number
 [0] Return To Main Menu
 ---------------------
 Enter your choise: """))
@@ -37,6 +38,8 @@ Enter your choise: """))
             show_all_events(events_data)
         elif user_choice == 4: #if user choose to show best selling events
             show_best_selling_events(events_data)
+        elif user_choice == 5: #if user choose to search ticket by serial number
+            show_ticket_by_serial(events_data)
         else: #if user choose an invalid option from the menu
             print('Please choose number from the menu!\n')
             continue
@@ -95,4 +98,17 @@ def show_best_selling_events(events_data):
             print(f'[{i+1}] {sorted_events[i]["event"]} - Number of sold tickets: {sorted_events[i]["sold_count"]}')
         else:
             print('No more events to show...')
-            break 
+            break
+
+def show_ticket_by_serial(events_data):
+    serial = input('Enter ticket serial number: ').strip()
+    for event in events_data:
+        for status, tickets_dict in [('Available', event['available']), ('Sold', event['sold'])]:
+            for section, tickets in tickets_dict.items():
+                for ticket in tickets:
+                    if ticket[0] == serial:
+                        print(f'Serial: {ticket[0]}, Row: {ticket[1]}, Seat: {ticket[2]}, Price: {ticket[3]} NIS')
+                        print(f'Section: {section}, Status: {status}')
+                        print(f'Event: {event["event"]} - {event["date"]} - {event["venue"]}')
+                        return
+    print('Ticket not found.')
