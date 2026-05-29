@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Add Event' if mode == 'new' else 'Edit Event' }}{% endblock %}
+{% block content %}
+
+<h1 class="mb-4">{{ 'Add Event' if mode == 'new' else 'Edit Event' }}</h1>
+
+<form method="post" class="card shadow-sm">
+  <div class="card-body">
+    <div class="mb-3">
+      <label class="form-label">Event name</label>
+      <input class="form-control" name="event" required
+             value="{{ event.event if event else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Date (DD/MM/YYYY)</label>
+      <input class="form-control" name="date" required placeholder="18/01/2026"
+             value="{{ event.date if event else '' }}">
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Venue</label>
+      <input class="form-control" name="venue" required
+             value="{{ event.venue if event else '' }}">
+    </div>
+  </div>
+  <div class="card-footer d-flex gap-2">
+    <button class="btn btn-primary">{{ 'Add event' if mode == 'new' else 'Save changes' }}</button>
+    <a class="btn btn-link"
+       href="{{ url_for('tickets.events_list') if mode == 'new' else url_for('tickets.event_detail', idx=idx) }}">Cancel</a>
+  </div>
+</form>
+
+{% endblock %}

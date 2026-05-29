@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Search Ticket{% endblock %}
+{% block content %}
+
+<h1 class="mb-4">Search Ticket by Serial</h1>
+
+<form method="get" class="mb-4">
+  <div class="input-group">
+    <input class="form-control" name="serial" placeholder="Enter serial number" value="{{ serial }}">
+    <button class="btn btn-primary">Search</button>
+  </div>
+</form>
+
+{% if searched %}
+  {% if result %}
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h2 class="h5 mb-3">Found: {{ result.ticket[0] }}</h2>
+        <dl class="row mb-0">
+          <dt class="col-sm-3">Status</dt>
+          <dd class="col-sm-9">
+            <span class="badge bg-{{ 'success' if result.status == 'Available' else 'secondary' }}">
+              {{ result.status }}
+            </span>
+          </dd>
+          <dt class="col-sm-3">Section</dt><dd class="col-sm-9">{{ result.section }}</dd>
+          <dt class="col-sm-3">Row</dt><dd class="col-sm-9">{{ result.ticket[1] }}</dd>
+          <dt class="col-sm-3">Seat</dt><dd class="col-sm-9">{{ result.ticket[2] }}</dd>
+          <dt class="col-sm-3">Price</dt><dd class="col-sm-9">{{ '%.2f'|format(result.ticket[3]) }} NIS</dd>
+          <dt class="col-sm-3">Event</dt>
+          <dd class="col-sm-9">{{ result.event.event }} — {{ result.event.date }} — {{ result.event.venue }}</dd>
+        </dl>
+      </div>
+    </div>
+  {% else %}
+    <div class="alert alert-warning">No ticket with serial "{{ serial }}".</div>
+  {% endif %}
+{% endif %}
+
+{% endblock %}
