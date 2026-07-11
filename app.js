@@ -5,6 +5,8 @@ const flashEl = document.getElementById('flash');
 const navLinks = document.querySelectorAll('.main-nav a');
 
 async function fetchInstanceInfo() {
+  const containerId = os.hostname();
+  console.log('Docker Short ID:', containerId);
   const badgeEl = document.getElementById('instance-badge');
   if (!badgeEl) {
     return;
