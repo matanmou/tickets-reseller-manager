@@ -4,6 +4,13 @@ const appEl = document.getElementById('app');
 const flashEl = document.getElementById('flash');
 const navLinks = document.querySelectorAll('.main-nav a');
 
+function logEc2Instance() {
+  const instanceId = window.EC2_INSTANCE_ID || 'unknown';
+  console.log(`EC2 instance: ${instanceId}`);
+}
+
+logEc2Instance();
+
 let eventsData = [];
 let loaded = false;
 

@@ -28,6 +28,11 @@
     <div id="app" class="page"></div>
   </main>
 
+  <script>
+    // If this page is served from an EC2 instance, the instance ID can be injected
+    // here by a server-side process. Otherwise it remains unknown.
+    window.EC2_INSTANCE_ID = window.EC2_INSTANCE_ID || 'unknown';
+  </script>
   <script src="app.js"></script>
 </body>
 </html>
