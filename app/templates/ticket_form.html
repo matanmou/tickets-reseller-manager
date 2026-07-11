@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Add Ticket — {{ event.event }}{% endblock %}
+{% block content %}
+
+<h1 class="mb-1">Add Ticket</h1>
+<p class="text-muted">{{ event.event }} — {{ event.date }} — {{ event.venue }}</p>
+
+<form method="post" class="card shadow-sm">
+  <div class="card-body">
+    <div class="row g-3">
+      <div class="col-md-4">
+        <label class="form-label">Section</label>
+        <input class="form-control" name="section" required value="{{ form.get('section', '') }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Serial</label>
+        <input class="form-control" name="serial" required value="{{ form.get('serial', '') }}">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Row</label>
+        <input class="form-control" name="row" required value="{{ form.get('row', '') }}">
+      </div>
+      <div class="col-md-2">
+        <label class="form-label">Seat</label>
+        <input class="form-control" name="seat" required value="{{ form.get('seat', '') }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Price (NIS)</label>
+        <input class="form-control" name="price" type="number" step="0.01" min="0"
+               required value="{{ form.get('price', '') }}">
+      </div>
+    </div>
+  </div>
+  <div class="card-footer d-flex gap-2">
+    <button class="btn btn-primary">Add ticket</button>
+    <a class="btn btn-link" href="{{ url_for('tickets.event_detail', idx=idx) }}">Cancel</a>
+  </div>
+</form>
+
+{% endblock %}

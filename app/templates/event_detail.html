@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}{{ event.event }}{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-start mb-3">
+  <div>
+    <h1>{{ event.event }}</h1>
+    <p class="text-muted mb-0">{{ event.date }} &middot; {{ event.venue }}</p>
+  </div>
+  <div class="btn-group">
+    <a class="btn btn-outline-secondary" href="{{ url_for('tickets.event_edit', idx=idx) }}">Edit info</a>
+    <a class="btn btn-success" href="{{ url_for('tickets.ticket_new', idx=idx) }}">+ Add ticket</a>
+  </div>
+</div>
+
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header"><strong>Available</strong></div>
+      <div class="card-body p-0">
+        {% if event.available %}
+          {% for section, tickets in event.available.items() %}
+            <div class="px-3 pt-3"><strong>Section {{ section }}</strong></div>
+            <table class="table table-sm mb-0">
+              <thead>
+                <tr><th>Serial</th><th>Row</th><th>Seat</th><th>Price</th><th></th></tr>
+              </thead>
+              <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                  <td>{{ ticket[0] }}</td>
+                  <td>{{ ticket[1] }}</td>
+                  <td>{{ ticket[2] }}</td>
+                  <td>{{ '%.2f'|format(ticket[3]) }} NIS</td>
+                  <td class="text-end">
+                    <form method="post" class="d-inline"
+                          action="{{ url_for('tickets.ticket_sell', idx=idx, section=section, pos=loop.index0) }}">
+                      <button class="btn btn-sm btn-primary">Sell</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endfor %}
+        {% else %}
+          <div class="p-3 text-muted">No available tickets.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-header"><strong>Sold</strong></div>
+      <div class="card-body p-0">
+        {% if event.sold %}
+          {% for section, tickets in event.sold.items() %}
+            <div class="px-3 pt-3"><strong>Section {{ section }}</strong></div>
+            <table class="table table-sm mb-0">
+              <thead>
+                <tr><th>Serial</th><th>Row</th><th>Seat</th><th>Price</th><th></th></tr>
+              </thead>
+              <tbody>
+                {% for ticket in tickets %}
+                <tr>
+                  <td>{{ ticket[0] }}</td>
+                  <td>{{ ticket[1] }}</td>
+                  <td>{{ ticket[2] }}</td>
+                  <td>{{ '%.2f'|format(ticket[3]) }} NIS</td>
+                  <td class="text-end">
+                    <form method="post" class="d-inline"
+                          action="{{ url_for('tickets.ticket_unsell', idx=idx, section=section, pos=loop.index0) }}">
+                      <button class="btn btn-sm btn-outline-secondary">Unsell</button>
+                    </form>
+                  </td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endfor %}
+        {% else %}
+          <div class="p-3 text-muted">No sold tickets.</div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-4">
+  <a class="btn btn-link" href="{{ url_for('tickets.events_list') }}">&larr; Back to all events</a>
+</div>
+
+{% endblock %}

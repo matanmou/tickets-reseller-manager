@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Available Tickets{% endblock %}
+{% block content %}
+
+<h1 class="mb-4">Available Tickets (upcoming events)</h1>
+
+{% if upcoming %}
+  {% for event in upcoming %}
+    <div class="card shadow-sm mb-3">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ event.event }}</strong>
+          <span class="text-muted ms-2">{{ event.date }} &middot; {{ event.venue }}</span>
+        </div>
+        <a class="btn btn-sm btn-outline-primary"
+           href="{{ url_for('tickets.event_detail', idx=event.indx) }}">Open</a>
+      </div>
+      <div class="card-body p-0">
+        {% if event.available %}
+          {% for section, tickets in event.available.items() %}
+            <div class="px-3 pt-3"><strong>Section {{ section }}</strong></div>
+            <table class="table table-sm mb-0">
+              <thead><tr><th>Serial</th><th>Row</th><th>Seat</th><th>Price</th></tr></thead>
+              <tbody>
+                {% for t in tickets %}
+                <tr>
+                  <td>{{ t[0] }}</td>
+                  <td>{{ t[1] }}</td>
+                  <td>{{ t[2] }}</td>
+                  <td>{{ '%.2f'|format(t[3]) }} NIS</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          {% endfor %}
+        {% else %}
+          <div class="p-3 text-muted">No tickets available for this event.</div>
+        {% endif %}
+      </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <div class="alert alert-info">No upcoming events.</div>
+{% endif %}
+
+{% endblock %}

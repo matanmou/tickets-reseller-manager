@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Summary{% endblock %}
+{% block content %}
+
+<h1 class="mb-4">Summary</h1>
+
+{% if total_events == 0 %}
+  <div class="alert alert-info">No events yet.</div>
+{% else %}
+<div class="row g-3">
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 text-muted">Counts</h2>
+        <dl class="row mb-0">
+          <dt class="col-sm-7">Total events</dt><dd class="col-sm-5">{{ summary.total_events }}</dd>
+          <dt class="col-sm-7">Events in {{ summary.this_year_label }}</dt>
+          <dd class="col-sm-5">{{ summary.this_year_count }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 text-muted">Income</h2>
+        <dl class="row mb-0">
+          <dt class="col-sm-7">Total income</dt>
+          <dd class="col-sm-5">{{ '%.2f'|format(summary.total_income) }} NIS</dd>
+          <dt class="col-sm-7">Top earning event</dt>
+          <dd class="col-sm-5">{{ summary.most_income_event or '—' }}</dd>
+          {% if summary.most_income_event %}
+          <dt class="col-sm-7">…with income</dt>
+          <dd class="col-sm-5">{{ '%.2f'|format(summary.most_income_amount) }} NIS</dd>
+          {% endif %}
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 text-muted">Best selling</h2>
+        <p class="mb-1"><strong>{{ summary.most_sold_event or '—' }}</strong></p>
+        {% if summary.most_sold_event %}
+        <p class="text-muted mb-0">{{ summary.most_sold_count }} tickets sold</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        <h2 class="h5 text-muted">Calendar</h2>
+        <dl class="row mb-0">
+          <dt class="col-sm-5">Next event</dt>
+          <dd class="col-sm-7">{{ summary.upcoming_event or 'No upcoming events' }}</dd>
+          <dt class="col-sm-5">Last event</dt>
+          <dd class="col-sm-7">{{ summary.previous_event or 'No previous events' }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

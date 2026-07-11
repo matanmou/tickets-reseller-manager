@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h1 class="mb-0">{{ title }}</h1>
+  {% if show_actions %}
+  <div class="btn-group">
+    <a class="btn btn-outline-secondary btn-sm {% if sort == 'date' %}active{% endif %}"
+       href="{{ url_for('tickets.events_list', sort='date') }}">Sort by date</a>
+    <a class="btn btn-outline-secondary btn-sm {% if sort == 'event' %}active{% endif %}"
+       href="{{ url_for('tickets.events_list', sort='event') }}">Sort by name</a>
+    <a class="btn btn-outline-secondary btn-sm {% if not sort %}active{% endif %}"
+       href="{{ url_for('tickets.events_list') }}">Default</a>
+  </div>
+  {% endif %}
+</div>
+
+{% if events %}
+<div class="table-responsive">
+  <table class="table table-hover bg-white shadow-sm align-middle">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Event</th>
+        <th>Date</th>
+        <th>Venue</th>
+        {% if show_sold_count %}<th>Sold tickets</th>{% endif %}
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for e in events %}
+      {% set event_idx = e.indx if 'indx' in e else loop.index0 %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ e.event }}</td>
+        <td>{{ e.date }}</td>
+        <td>{{ e.venue }}</td>
+        {% if show_sold_count %}<td>{{ e.sold_count }}</td>{% endif %}
+        <td class="text-end">
+          <a class="btn btn-sm btn-outline-primary"
+             href="{{ url_for('tickets.event_detail', idx=event_idx) }}">Open</a>
+          {% if show_actions %}
+          <a class="btn btn-sm btn-outline-secondary"
+             href="{{ url_for('tickets.event_edit', idx=event_idx) }}">Edit</a>
+          <form method="post" class="d-inline"
+                action="{{ url_for('tickets.event_duplicate', idx=event_idx) }}">
+            <button class="btn btn-sm btn-outline-secondary">Duplicate</button>
+          </form>
+          <form method="post" class="d-inline"
+                action="{{ url_for('tickets.event_delete', idx=event_idx) }}"
+                onsubmit="return confirm('Delete this event?');">
+            <button class="btn btn-sm btn-outline-danger">Delete</button>
+          </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+<div class="alert alert-info">{{ empty }}</div>
+{% endif %}
+
+{% endblock %}

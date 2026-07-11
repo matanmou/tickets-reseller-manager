@@ -270,5 +270,21 @@
     "venue": "Sammy Ofer Staduim",
     "available": {},
     "sold": {}
+  },
+  {
+    "event": "natanya",
+    "date": "15/06/2026",
+    "venue": "sammy",
+    "available": {},
+    "sold": {
+      "A": [
+        [
+          "Antn1010",
+          "10",
+          "10",
+          110.0
+        ]
+      ]
+    }
   }
 ]
