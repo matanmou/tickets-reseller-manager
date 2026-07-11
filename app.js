@@ -4,12 +4,50 @@ const appEl = document.getElementById('app');
 const flashEl = document.getElementById('flash');
 const navLinks = document.querySelectorAll('.main-nav a');
 
-function logEc2Instance() {
-  const instanceId = window.EC2_INSTANCE_ID || 'unknown';
-  console.log(`EC2 instance: ${instanceId}`);
+async function fetchInstanceInfo() {
+  const badgeEl = document.getElementById('instance-badge');
+  if (!badgeEl) {
+    return;
+  }
+
+  try {
+    const tokenRes = await fetch('http://169.254.169.254/latest/api/token', {
+      method: 'PUT',
+      headers: { 'X-aws-ec2-metadata-token-ttl-seconds': '21600' },
+    });
+
+    if (!tokenRes.ok) {
+      throw new Error('metadata unavailable');
+    }
+
+    const token = await tokenRes.text();
+    const [instanceIdRes, privateIpRes, azRes] = await Promise.all([
+      fetch('http://169.254.169.254/latest/meta-data/instance-id', {
+        headers: { 'X-aws-ec2-metadata-token': token },
+      }),
+      fetch('http://169.254.169.254/latest/meta-data/local-ipv4', {
+        headers: { 'X-aws-ec2-metadata-token': token },
+      }),
+      fetch('http://169.254.169.254/latest/meta-data/placement/availability-zone', {
+        headers: { 'X-aws-ec2-metadata-token': token },
+      }),
+    ]);
+
+    const instanceId = instanceIdRes.ok ? await instanceIdRes.text() : 'local';
+    const privateIp = privateIpRes.ok ? await privateIpRes.text() : null;
+    const availabilityZone = azRes.ok ? await azRes.text() : null;
+
+    badgeEl.textContent = `Instance: ${instanceId}`;
+    if (privateIp || availabilityZone) {
+      badgeEl.title = [privateIp, availabilityZone].filter(Boolean).join(' · ');
+    }
+  } catch (error) {
+    badgeEl.textContent = 'Instance: local';
+    badgeEl.title = 'Not running on EC2 metadata';
+  }
 }
 
-logEc2Instance();
+fetchInstanceInfo();
 
 let eventsData = [];
 let loaded = false;

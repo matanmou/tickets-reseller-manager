@@ -51,6 +51,22 @@ a {
   padding: 14px 0;
 }
 
+.topbar-meta {
+  margin-left: auto;
+  margin-right: 8px;
+}
+
+.instance-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.12);
+  color: #e2e8f0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
 .brand {
   font-size: 1.3rem;
   font-weight: 700;
