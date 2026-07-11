@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tickets Reseller Manager</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container topbar-inner">
+      <a class="brand" href="#/">Tickets Reseller</a>
+      <nav class="main-nav" aria-label="Main navigation">
+        <a href="#/" data-route="/">Dashboard</a>
+        <a href="#/events" data-route="/events">Events</a>
+        <a href="#/upcoming" data-route="/upcoming">Upcoming</a>
+        <a href="#/available" data-route="/available">Available</a>
+        <a href="#/best-selling" data-route="/best-selling">Best Selling</a>
+        <a href="#/search" data-route="/search">Search</a>
+        <a href="#/summary" data-route="/summary">Summary</a>
+      </nav>
+      <a class="btn btn-primary" href="#/new-event">+ Add Event</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div id="flash" class="flash hidden"></div>
+    <div id="app" class="page"></div>
+  </main>
+
+  <script>
+    // If this page is served from an EC2 instance, the instance ID can be injected
+    // here by a server-side process. Otherwise it remains unknown.
+    window.EC2_INSTANCE_ID = window.EC2_INSTANCE_ID || 'unknown';
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>
