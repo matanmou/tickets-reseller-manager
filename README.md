@@ -31,4 +31,18 @@ http://localhost:8000
 - Data is loaded from `data.json` and persisted in browser storage.
 - Changes are stored in `localStorage`, so reload does not lose the current inventory unless you clear browser data.
 - Use the navigation bar to browse the dashboard, events, search, and summary pages.
-- The frontend logs the current EC2 instance ID to the browser console if `window.EC2_INSTANCE_ID` is injected by the server. Otherwise it logs `unknown`.
+
+## Docker with Apache
+
+Build and run:
+
+```bash
+docker build -t tickets-reseller-apache .
+docker run -p 8080:80 tickets-reseller-apache
+```
+
+Then open:
+
+```text
+http://localhost:8080
+```
